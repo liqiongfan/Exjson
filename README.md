@@ -83,7 +83,37 @@ EXJSON_API void destroy_exjson(EXJSON *exjson);
 
 
 
-#### 示例
+#### 示例-编码Exjson
+
+```
+#include <stdio.h>
+#include "exjson.h"
+
+
+int main(int argc, char *argv[])
+{
+    EXJSON *exjson = INIT_EXJSON();
+    
+    EXJSON *array = INIT_EXJSON();
+    add_array_string(array, "Exjson");
+    add_array_string(array, "1.0.0");
+    add_array_string(array, "Very fast");
+    
+    add_object_array(exjson, "exjson", array);
+    
+    char *str = encode_json(exjson);
+    printf("%s", str);
+    free(str);
+    destroy_exjson(exjson);
+    destroy_exjson(array);
+    
+    // 输出如下
+    // {"exjson":["Exjson","1.0.0","Very fast"]}
+    return 0;
+}
+```
+
+#### 示例-解码Exjson
 
 ```
 #include <stdio.h>
@@ -93,7 +123,7 @@ EXJSON_API void destroy_exjson(EXJSON *exjson);
 int main(int argc, char *argv[])
 {
     EXJSON *v = decode_json("{\n"
-                            "    \"b\": 100,\n"
+                            "    \"b\": 100, # 这个是注释\n"
                             "    \"a\":{\n"
                             "        \"a\": \"b\"\n"
                             "    }\n"
@@ -104,6 +134,9 @@ int main(int argc, char *argv[])
     free(str);
     destroy_exjson(v);
     return 0;
+    
+    // 输出如下：
+    // {"b":100,"a":{"a":"b"}}
 }
 ```
 
