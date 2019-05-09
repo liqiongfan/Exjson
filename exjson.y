@@ -3,13 +3,18 @@
     #include <stdlib.h>
     #include "stack.h"
     #include "exjson.h"
+    extern int yylex();
+    extern int yylineno;
+    extern char *yytext;
+    int _status = 1;
     typedef struct yy_buffer_state * YY_BUFFER_STATE;
     extern int yyparse();
     extern YY_BUFFER_STATE yy_scan_string(char * str);
     extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
     extern void yyerror(char *);
     /* (INT:    2) (DOUBLE: 3) (STR:    4)
-     * (ARRAY:  5) (OBJECT: 6) */
+     * (ARRAY:  5) (OBJECT: 6) (true    7)
+     * (false:  8) (null:   9) */
      E_STACK   *value_stack,
                *exjson_stack;
      EXJSON    *exjson;
@@ -216,10 +221,12 @@ EXJSON *decode_json(char *json_string)
     yyparse();
     yy_delete_buffer(buffer);
     destroy_stack(value_stack);
+    if ( !_status ) { destroy_exjson(exjson); return NULL; }
     return exjson;
 }
 
-void yyerror(char *str)
+void yyerror(char *msg)
 {
-    printf("%s\n", str);
+    _status = 0;
+    fprintf(stderr, "\n%d: %s at '%s'\n", yylineno, msg, yytext);
 }

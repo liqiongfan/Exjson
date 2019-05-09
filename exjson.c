@@ -568,6 +568,7 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
  * if not memory lean will occured! */
 char *encode_json(EXJSON *exjson)
 {
+    if ( !exjson ) return NULL;
     EXJSON_V *temp = E_DATA_P(exjson);
     int _sum = 1, _used_num = 0;
     unsigned long i = 0, num = E_NUM_P(exjson);
@@ -641,6 +642,7 @@ char *encode_json(EXJSON *exjson)
 
 void destroy_exjson(EXJSON *exjson)
 {
+    if ( !exjson ) return ;
     EXJSON_V *temp = E_DATA_P(exjson);
     unsigned long i = 0, num = E_NUM_P(exjson);
     static int _num = 0;

@@ -72,19 +72,23 @@
     #include "stack.h"
     #include "exjson.h"
     extern int yylex();
+    extern int yylineno;
+    extern char *yytext;
+    int _status = 1;
     typedef struct yy_buffer_state * YY_BUFFER_STATE;
     extern int yyparse();
     extern YY_BUFFER_STATE yy_scan_string(char * str);
     extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
     extern void yyerror(char *);
     /* (INT:    2) (DOUBLE: 3) (STR:    4)
-     * (ARRAY:  5) (OBJECT: 6) */
+     * (ARRAY:  5) (OBJECT: 6) (true    7)
+     * (false:  8) (null:   9) */
      E_STACK   *value_stack,
                *exjson_stack;
      EXJSON    *exjson;
      E_STACK_V *temp_exjson_stack;
 
-#line 88 "exjson.tab.c" /* yacc.c:338  */
+#line 92 "exjson.tab.c" /* yacc.c:338  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -133,7 +137,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 20 "exjson.y" /* yacc.c:353  */
+#line 24 "exjson.y" /* yacc.c:353  */
 
     struct {
         long ival;
@@ -142,7 +146,7 @@ union YYSTYPE
         unsigned char val_type;
     } val;
 
-#line 146 "exjson.tab.c" /* yacc.c:353  */
+#line 150 "exjson.tab.c" /* yacc.c:353  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -446,8 +450,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    34,    34,    35,    39,    46,    53,    93,   121,   156,
-     184,   188,   192,   196,   200
+       0,    38,    38,    39,    43,    50,    57,    97,   125,   160,
+     188,   192,   196,   200,   204
 };
 #endif
 
@@ -1227,23 +1231,23 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 40 "exjson.y" /* yacc.c:1660  */
+#line 44 "exjson.y" /* yacc.c:1660  */
     {
 
     }
-#line 1235 "exjson.tab.c" /* yacc.c:1660  */
+#line 1239 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 5:
-#line 47 "exjson.y" /* yacc.c:1660  */
+#line 51 "exjson.y" /* yacc.c:1660  */
     {
 
     }
-#line 1243 "exjson.tab.c" /* yacc.c:1660  */
+#line 1247 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 6:
-#line 54 "exjson.y" /* yacc.c:1660  */
+#line 58 "exjson.y" /* yacc.c:1660  */
     {
         switch ((yyvsp[0].val).val_type)
         {
@@ -1283,11 +1287,11 @@ yyreduce:
                 break;
         }
     }
-#line 1287 "exjson.tab.c" /* yacc.c:1660  */
+#line 1291 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 7:
-#line 94 "exjson.y" /* yacc.c:1660  */
+#line 98 "exjson.y" /* yacc.c:1660  */
     {
         switch ((yyvsp[0].val).val_type)
         {
@@ -1312,11 +1316,11 @@ yyreduce:
                 break;
         }
     }
-#line 1316 "exjson.tab.c" /* yacc.c:1660  */
+#line 1320 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 8:
-#line 122 "exjson.y" /* yacc.c:1660  */
+#line 126 "exjson.y" /* yacc.c:1660  */
     {
         switch ((yyvsp[0].val).val_type)
         {
@@ -1351,11 +1355,11 @@ yyreduce:
                 break;
         }
     }
-#line 1355 "exjson.tab.c" /* yacc.c:1660  */
+#line 1359 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 9:
-#line 157 "exjson.y" /* yacc.c:1660  */
+#line 161 "exjson.y" /* yacc.c:1660  */
     {
         switch ((yyvsp[0].val).val_type)
         {
@@ -1380,51 +1384,51 @@ yyreduce:
                 break;
         }
     }
-#line 1384 "exjson.tab.c" /* yacc.c:1660  */
+#line 1388 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 10:
-#line 185 "exjson.y" /* yacc.c:1660  */
-    {
-        (yyval.val) = (yyvsp[0].val);
-    }
-#line 1392 "exjson.tab.c" /* yacc.c:1660  */
-    break;
-
-  case 11:
 #line 189 "exjson.y" /* yacc.c:1660  */
     {
         (yyval.val) = (yyvsp[0].val);
     }
-#line 1400 "exjson.tab.c" /* yacc.c:1660  */
+#line 1396 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
-  case 12:
+  case 11:
 #line 193 "exjson.y" /* yacc.c:1660  */
     {
         (yyval.val) = (yyvsp[0].val);
     }
-#line 1408 "exjson.tab.c" /* yacc.c:1660  */
+#line 1404 "exjson.tab.c" /* yacc.c:1660  */
+    break;
+
+  case 12:
+#line 197 "exjson.y" /* yacc.c:1660  */
+    {
+        (yyval.val) = (yyvsp[0].val);
+    }
+#line 1412 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 13:
-#line 197 "exjson.y" /* yacc.c:1660  */
+#line 201 "exjson.y" /* yacc.c:1660  */
     {
        (yyval.val).val_type = SV_ARRAY;
     }
-#line 1416 "exjson.tab.c" /* yacc.c:1660  */
+#line 1420 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
   case 14:
-#line 201 "exjson.y" /* yacc.c:1660  */
+#line 205 "exjson.y" /* yacc.c:1660  */
     {
         (yyval.val).val_type = SV_OBJECT;
     }
-#line 1424 "exjson.tab.c" /* yacc.c:1660  */
+#line 1428 "exjson.tab.c" /* yacc.c:1660  */
     break;
 
 
-#line 1428 "exjson.tab.c" /* yacc.c:1660  */
+#line 1432 "exjson.tab.c" /* yacc.c:1660  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1651,7 +1655,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 205 "exjson.y" /* yacc.c:1903  */
+#line 209 "exjson.y" /* yacc.c:1903  */
 
 
 /* Remember that the return value need be freed by destroy_exjson() function
@@ -1667,10 +1671,12 @@ EXJSON *decode_json(char *json_string)
     yyparse();
     yy_delete_buffer(buffer);
     destroy_stack(value_stack);
+    if ( !_status ) { destroy_exjson(exjson); return NULL; }
     return exjson;
 }
 
-void yyerror(char *str)
+void yyerror(char *msg)
 {
-    printf("%s\n", str);
+    _status = 0;
+    fprintf(stderr, "\n%d: %s at '%s'\n", yylineno, msg, yytext);
 }
