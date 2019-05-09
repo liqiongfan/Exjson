@@ -59,7 +59,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "exjson.y" /* yacc.c:1912  */
+#line 20 "exjson.y" /* yacc.c:1912  */
 
     struct {
         long ival;
