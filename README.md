@@ -14,6 +14,18 @@
 
 
 
+### 注意
+
+**Exjson**支持注释，Exjson中注释以 `#` 或者`//` 开头，一直延续到行尾，如下是合格的 **Exjson**格式 
+
+```
+{
+    "name": "Exjson", // 名字：Exjson
+    "version": "1.0", # 版本号
+    "platform": [ "MacOSX", "Linux", "Windows" ]
+}
+```
+
 ### APIs
 
 ```
