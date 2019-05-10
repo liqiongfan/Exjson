@@ -631,7 +631,7 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
             }
             assert(_temp_ptr != NULL);
             dest = _temp_ptr;
-            *_dest_space+= _time_incr_ + 1;
+            *_dest_space+= _source_len + 1;
         }
         else
         {
