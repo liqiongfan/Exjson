@@ -378,6 +378,7 @@ EXJSON *
 /* Get the value from exjson with key */
 exjson_get_array_or_object_from_key(EXJSON *exjson, char *key_name)
 {
+	if ( !exjson ) return NULL;
 	EXJSON_V *temp = E_DATA_P(exjson);
 	unsigned long i = 0, num = E_NUM_P(exjson);
 	if ( E_TYPE_P(exjson) == EX_ARRAY )
@@ -401,6 +402,7 @@ exjson_get_array_or_object_from_key(EXJSON *exjson, char *key_name)
 EXJSON *
 exjson_get_array_or_object_from_index(EXJSON *exjson, int index)
 {
+    if ( !exjson ) return NULL;
 	EXJSON_V *temp = E_DATA_P(exjson);
 	if ( E_TYPE_P(exjson) == EX_OBJECT )
 	{
@@ -421,6 +423,7 @@ exjson_get_array_or_object_from_index(EXJSON *exjson, int index)
 void *
 exjson_get_val_from_key(EXJSON *exjson, char *key)
 {
+	if ( !exjson ) return NULL;
 	EXJSON_V *temp = E_DATA_P(exjson);
 	unsigned long i = 0, num = E_NUM_P(exjson);
 
@@ -439,6 +442,7 @@ exjson_get_val_from_key(EXJSON *exjson, char *key)
 void *
 exjson_get_val_from_index(EXJSON *exjson, int index)
 {
+	if ( !exjson ) return NULL;
 	EXJSON_V *temp = E_DATA_P(exjson);
 	unsigned long num = E_NUM_P(exjson);
 
@@ -456,6 +460,7 @@ void
  * but encoding & decoding are perfectly ok. */
 print_exjson(EXJSON *exjson, int _num)
 {
+	if ( !exjson ) return ;
     EXJSON_V *temp = E_DATA_P(exjson);
     int j = 0;
     unsigned long i = 0, num = E_NUM_P(exjson);
