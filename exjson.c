@@ -74,6 +74,7 @@ int add_object_int(EXJSON *exjson, char *key, long val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -117,6 +118,7 @@ int add_object_double(EXJSON *exjson, char *key, double val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -162,6 +164,7 @@ int add_object_string(EXJSON *exjson, char *key, char *val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -199,6 +202,7 @@ int add_object_object(EXJSON *exjson, char *key, void *val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -236,6 +240,7 @@ int add_object_array(EXJSON *exjson, char *key, void *val)
         free( val_ptr ); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -289,6 +294,7 @@ int add_array_int(EXJSON *exjson, long val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -324,6 +330,7 @@ int add_array_double(EXJSON *exjson, double val)
         free( val_ptr ); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -361,6 +368,7 @@ int add_array_string(EXJSON *exjson, char *val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -391,6 +399,7 @@ int add_array_object(EXJSON *exjson, void *val)
         free(val_ptr); return 0;
     }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
+    free(temp_ptr);
     E_NUM_P(exjson)++;
     
     E_DATA_P(exjson) = ptr;
@@ -737,7 +746,7 @@ char *encode_json(EXJSON *exjson)
 void destroy_exjson(EXJSON *exjson)
 {
     if ( !exjson ) return ;
-    EXJSON_V *temp = E_DATA_P(exjson);
+    EXJSON_V *temp = E_DATA_P(exjson), *_ptr = temp;
     unsigned long i = 0, num = E_NUM_P(exjson);
     static int _num = 0;
     

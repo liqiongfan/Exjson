@@ -62,16 +62,19 @@ object_key_pair
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_int(exjson, $1.ptr, $3.ival);
+                free($1.ptr);
                 break;
             case SV_DOUBLE:
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_double(exjson, $1.ptr, $3.dval);
+                free($1.ptr);
                 break;
             case SV_STRING:
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_string(exjson, $1.ptr, $3.ptr);
+                free($1.ptr); free($3.ptr);
                 break;
             case SV_ARRAY:
                 temp_exjson_stack = pop(exjson_stack);
@@ -85,12 +88,14 @@ object_key_pair
                     push(exjson_stack, exjson, 0);
                 }
                 add_object_array(exjson, $1.ptr, SV_DATA_P(temp_exjson_stack));
+                free($1.ptr);
                 break;
             case SV_OBJECT:
                 temp_exjson_stack = pop(exjson_stack);
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_object(exjson, $1.ptr, SV_DATA_P(temp_exjson_stack));
+                free($1.ptr);
                 break;
         }
     }
@@ -100,21 +105,26 @@ object_key_pair
         {
             case SV_INT:
                 add_object_int(exjson, $3.ptr, $5.ival);
+                free($3.ptr);
                 break;
             case SV_DOUBLE:
                 add_object_double(exjson, $3.ptr, $5.dval);
+                free($3.ptr);
                 break;
             case SV_STRING:
                 add_object_string(exjson, $3.ptr, $5.ptr);
+                free($3.ptr); free($5.ptr);
                 break;
             case SV_ARRAY:
-        temp_exjson_stack = pop(exjson_stack);
+        	temp_exjson_stack = pop(exjson_stack);
                 add_object_array(SV_DATA_P(SV_NEXT_P(temp_exjson_stack)), $3.ptr, SV_DATA_P(temp_exjson_stack));
                 exjson = SV_DATA_P(SV_NEXT_P(temp_exjson_stack));
+                free($3.ptr);
                 break;
             case SV_OBJECT:
                 temp_exjson_stack = pop(exjson_stack);
                 add_object_object(SV_DATA_P(SV_NEXT_P(temp_exjson_stack)), $3.ptr, SV_DATA_P(temp_exjson_stack));
+                free($3.ptr);
                 exjson = SV_DATA_P(SV_NEXT_P(temp_exjson_stack));
                 break;
         }
@@ -140,6 +150,7 @@ array_data
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_array_string(exjson, $1.ptr);
+                free($1.ptr);
                 break;
             case SV_ARRAY:
                 /* array */
