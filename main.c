@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    EXJSON *v = decode_json("{\"hello world\":10 # hello world\n"
+    EXJSON *v = decode_json("{\"hello world\":-10 # hello world\n"
                             "}");
 
     char *str = encode_json(v);
