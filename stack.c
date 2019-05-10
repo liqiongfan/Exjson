@@ -52,7 +52,7 @@ push(E_STACK *stack, void *data, size_t size)
 		SV_DATA_P(temp_val) = malloc(size);
 		if ( SV_DATA_P(temp_val) == NULL )
 		{
-			free(SV_DATA_P(temp_val));return NULL;
+			free(SV_DATA_P(temp_val));return 0;
 		}
 		memcpy(SV_DATA_P(temp_val), data, size);
 	}
@@ -85,7 +85,7 @@ push_int(E_STACK *stack, int val)
 	SV_DATA_P(temp_val) = malloc(sizeof(int));
 	if ( SV_DATA_P(temp_val) == NULL )
 	{
-		free(SV_DATA_P(temp_val));return NULL;
+		free(SV_DATA_P(temp_val));return 0;
 	}
 	memcpy(SV_DATA_P(temp_val), &val, sizeof(int));
 	SV_TAG_P(temp_val) = SV_INT;
