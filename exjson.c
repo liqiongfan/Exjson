@@ -11,7 +11,10 @@ EXJSON_V *
 INIT_EXJSON_V()
 {
     EXJSON_V *ptr = malloc(sizeof(EXJSON_V));
-    assert( ptr != NULL );
+    if ( ptr == NULL )
+    {
+        free(ptr); return NULL;
+    }
     memset(ptr, 0, sizeof(EXJSON_V));
     
     EV_NAME_P(ptr) = NULL;
@@ -24,7 +27,10 @@ EXJSON *
 INIT_EXJSON()
 {
     EXJSON *ptr = malloc(sizeof(EXJSON));
-    assert( ptr != NULL );
+    if ( ptr == NULL )
+    {
+        free(ptr); return NULL;
+    }
     memset(ptr, 0, sizeof(EXJSON));
     
     E_DATA_P(ptr) = NULL;
@@ -43,13 +49,19 @@ int add_object_int(EXJSON *exjson, char *key, long val)
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
-    assert(EV_NAME_P(temp_ptr) != NULL);
+    if ( EV_NAME_P(temp_ptr) == NULL )
+    {
+        free(EV_NAME_P(temp_ptr)); return 0;
+    }
     memset(EV_NAME_P(temp_ptr), 0, key_len + 1);
     memcpy(EV_NAME_P(temp_ptr), key, key_len);
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof(long) );
-    assert(EV_VALUE_P(temp_ptr) != NULL);
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free(EV_VALUE_P(temp_ptr));return 0;
+    }
     memcpy(EV_VALUE_P(temp_ptr), &val, sizeof(long));
     
     /* Set value type */
@@ -57,7 +69,10 @@ int add_object_int(EXJSON *exjson, char *key, long val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -76,13 +91,20 @@ int add_object_double(EXJSON *exjson, char *key, double val)
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
+    if ( EV_NAME_P(temp_ptr) == NULL )
+    {
+        free( EV_NAME_P(temp_ptr) ); return 0;
+    }
     assert(EV_NAME_P(temp_ptr) != NULL);
     memset(EV_NAME_P(temp_ptr), 0, (key_len + 1));
     memcpy(EV_NAME_P(temp_ptr), key, (key_len));
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof( double) );
-    assert(EV_VALUE_P(temp_ptr) != NULL);
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free(EV_VALUE_P(temp_ptr)); return 0;
+    }
     memcpy(EV_VALUE_P(temp_ptr), &val, sizeof( double ));
     
     /* Set value type */
@@ -90,7 +112,10 @@ int add_object_double(EXJSON *exjson, char *key, double val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -109,12 +134,20 @@ int add_object_string(EXJSON *exjson, char *key, char *val)
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
+    if ( EV_NAME_P(temp_ptr) == NULL )
+    {
+        free( EV_NAME_P(temp_ptr) );return 0;
+    }
     assert(EV_NAME_P(temp_ptr) != NULL);
     memset(EV_NAME_P(temp_ptr), 0, key_len + 1);
     memcpy(EV_NAME_P(temp_ptr), key, key_len);
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof( char) * ( val_len + 1 ));
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free( EV_VALUE_P(temp_ptr) ); return 0;
+    }
     memset(EV_VALUE_P(temp_ptr), 0, val_len + 1);
     assert(EV_VALUE_P(temp_ptr) != NULL);
     memcpy(EV_VALUE_P(temp_ptr), val, (val_len));
@@ -124,7 +157,10 @@ int add_object_string(EXJSON *exjson, char *key, char *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -143,7 +179,10 @@ int add_object_object(EXJSON *exjson, char *key, void *val)
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
-    assert(EV_NAME_P(temp_ptr) != NULL);
+    if ( EV_NAME_P(temp_ptr) == NULL )
+    {
+        free( EV_NAME_P(temp_ptr) ); return 0;
+    }
     memset(EV_NAME_P(temp_ptr), 0, key_len + 1);
     memcpy(EV_NAME_P(temp_ptr), key, key_len);
     
@@ -155,7 +194,10 @@ int add_object_object(EXJSON *exjson, char *key, void *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -174,7 +216,10 @@ int add_object_array(EXJSON *exjson, char *key, void *val)
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
-    assert(EV_NAME_P(temp_ptr) != NULL);
+    if ( EV_NAME_P(temp_ptr) == NULL )
+    {
+        free( EV_NAME_P(temp_ptr) ); return 0;
+    }
     memset(EV_NAME_P(temp_ptr), 0, key_len + 1);
     memcpy(EV_NAME_P(temp_ptr), key, key_len);
     
@@ -186,7 +231,10 @@ int add_object_array(EXJSON *exjson, char *key, void *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V) * size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free( val_ptr ); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -225,7 +273,10 @@ int add_array_int(EXJSON *exjson, long val)
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof( long) );
-    assert(EV_VALUE_P(temp_ptr) != NULL);
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free( EV_VALUE_P(temp_ptr) ); return 0;
+    }
     memcpy(EV_VALUE_P(temp_ptr), &val, sizeof( long));
     
     /* Set value type */
@@ -233,7 +284,10 @@ int add_array_int(EXJSON *exjson, long val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -254,7 +308,10 @@ int add_array_double(EXJSON *exjson, double val)
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof( double ) );
-    assert(EV_VALUE_P(temp_ptr) != NULL);
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free( EV_VALUE_P(temp_ptr) ); return 0;
+    }
     memcpy(EV_VALUE_P(temp_ptr), &val, sizeof( double ));
     
     /* Set value type */
@@ -262,7 +319,10 @@ int add_array_double(EXJSON *exjson, double val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free( val_ptr ); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -284,8 +344,11 @@ int add_array_string(EXJSON *exjson, char *val)
     
     /* Allocate data memory and store it */
     EV_VALUE_P(temp_ptr) = malloc( sizeof( char) * ( val_len + 1 ));
+    if ( EV_VALUE_P(temp_ptr) == NULL )
+    {
+        free( EV_VALUE_P(temp_ptr) ); return 0;
+    }
     memset(EV_VALUE_P(temp_ptr), 0, val_len + 1);
-    assert(EV_VALUE_P(temp_ptr) != NULL);
     memcpy(EV_VALUE_P(temp_ptr), val, (val_len));
     
     /* Set value type */
@@ -293,7 +356,10 @@ int add_array_string(EXJSON *exjson, char *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -320,7 +386,10 @@ int add_array_object(EXJSON *exjson, void *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
@@ -347,7 +416,10 @@ int add_array_array(EXJSON *exjson, void *val)
     
     /* add to exjson */
     ptr = realloc(val_ptr, sizeof(EXJSON_V)*size);
-    assert(ptr != NULL);
+    if ( ptr == NULL )
+    {
+        free(val_ptr); return 0;
+    }
     memcpy(ptr + E_NUM_P(exjson), temp_ptr, sizeof(EXJSON_V));
     E_NUM_P(exjson)++;
     
