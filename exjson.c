@@ -611,6 +611,10 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
     if ( *_used_num > ( *_dest_space - 1 ) )
     {
         _temp_ptr = realloc(dest, sizeof(char) * (*_dest_space + _time_incr_));
+        if ( _temp_ptr == NULL )
+        {
+        	free(dest); return NULL;
+        }
         assert(_temp_ptr != NULL);
         dest = _temp_ptr;
         *_dest_space+= _time_incr_;
@@ -621,6 +625,10 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
         if ( _source_len > _time_incr_ )
         {
             _temp_ptr = realloc(dest, sizeof(char) * (*_dest_space + _source_len + 1));
+            if ( _temp_ptr == NULL )
+            {
+            	free(dest); return NULL;
+            }
             assert(_temp_ptr != NULL);
             dest = _temp_ptr;
             *_dest_space+= _time_incr_ + 1;
@@ -628,6 +636,10 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
         else
         {
             _temp_ptr = realloc(dest, sizeof(char) * (*_dest_space + _time_incr_));
+	        if ( _temp_ptr == NULL )
+	        {
+		        free(dest); return NULL;
+	        }
             assert(_temp_ptr != NULL);
             dest = _temp_ptr;
             *_dest_space+= _time_incr_;
@@ -642,7 +654,7 @@ _exjson_strcat_(char *dest, char *source, int *_dest_space, int *_used_num)
 
 /* Output the EXJSON structure to the JSON string
  * NOTE that: free the returned string after used
- * if not memory lean will occured! */
+ * if not memory leak will occurred! */
 char *encode_json(EXJSON *exjson)
 {
     if ( !exjson ) return NULL;
@@ -652,6 +664,11 @@ char *encode_json(EXJSON *exjson)
     
     char *inner_str = NULL;
     char *_result_str = malloc(sizeof(char) * (_sum + 1) );
+    if ( _result_str == NULL )
+    {
+    	free(_result_str); return NULL;
+    }
+    assert(_result_str != NULL);
     memset(_result_str, 0, sizeof(char) * ( _sum + 1 ) );
     
     switch( E_TYPE_P(exjson) )
