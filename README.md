@@ -6,6 +6,40 @@
 
 **Exjson**是一款高性能的基于Flex & Bison的 **JSON** 解析器，**Xserver**引擎自带 **Exjson** 解析器，其他需要使用的只需要引入几个头文件和源文件即可
 
+#### Exjson性能
+
+测试代码案例如下：
+
+```
+printf("start_time: %ld\n", time(NULL));
+for ( int i = 0; i < 1000000; ++i )
+{
+	EXJSON *v = decode_json("{\n"
+                                "    \"a\": \"b\",\n"
+                                "    \"b\": \"c\",\n"
+                                "    \"c\": {\n"
+                                "        \"d\": \"e\",\n"
+                                "        \"e\": {\n"
+                                "            \"f\": \"g\",\n"
+                                "            \"g\": \"h\",\n"
+                                "            \"h\": [ \"Linux\", \"Windows\", \"macOSX\"]\n"
+                                "        }\n"
+                                "    }\n"
+                                "}");
+    destroy_exjson(v);
+}
+printf("end_time: %ld\n", time(NULL));
+```
+
+解码与编码 JSON **1000000** 次测试结果均平衡稳定于：12~15s之间
+
+```
+start_time: 1557548671
+end_time: 1557548683
+```
+
+测试机器：**MacBookPro 15寸 i7**
+
 #### Exjson特殊符号解析规则
 
 | 文本符号  | 符号含义       | Exjson解析结果 | 反序列化输出 |
