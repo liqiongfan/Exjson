@@ -746,35 +746,31 @@ char *encode_json(EXJSON *exjson)
 void destroy_exjson(EXJSON *exjson)
 {
     if ( !exjson ) return ;
-    EXJSON_V *temp = E_DATA_P(exjson), *_ptr = temp;
-    unsigned long i = 0, num = E_NUM_P(exjson);
     static int _num = 0;
     
-    switch( E_TYPE_P(exjson) )
+    for ( int i = 0; i < E_NUM_P(exjson); ++i )
     {
-        case EX_OBJECT:
-        case EX_ARRAY:
+        EXJSON_V *temp = E_DATA_P(exjson) + i;
+        switch ( EV_TYPE_P(temp) )
         {
-            for ( ; i < num; i++ )
-            {
-                free(EV_NAME_P(temp));
-                EV_NAME_P(temp) = NULL;
-                
-                if ( EV_TYPE_P(temp) == EXJSON_OBJECT || EV_TYPE_P(temp) == EXJSON_ARRAY )
-                {
-                    _num++;
-                    destroy_exjson(EV_VALUE_P(temp));
-                    _num--;
-                }
-                else
-                {
-                    free( EV_VALUE_P( temp ) );
-                    EV_VALUE_P( temp ) = NULL;
-                    temp = temp + 1;
-                }
-            }
+            case EXJSON_OBJECT:
+            case EXJSON_ARRAY:
+                free( EV_NAME_P(temp) );
+                ++_num;
+                destroy_exjson(EV_VALUE_P(temp));
+                --_num;
+                free( EV_VALUE_P(temp) );
+                break;
+            default:
+                free( EV_NAME_P(temp) );
+                free( EV_VALUE_P(temp) );
+                break;
+        }
+        if ( i == E_NUM_P(exjson) - 1 )
+        {
+            free( E_DATA_P(exjson) );
         }
     }
-
-    if (_num == 0) free(exjson);
+    
+    if ( _num == 0 ) free(exjson);
 }

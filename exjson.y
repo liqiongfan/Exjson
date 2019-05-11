@@ -15,8 +15,7 @@
     /* (INT:    2) (DOUBLE: 3) (STR:    4)
      * (ARRAY:  5) (OBJECT: 6) (true    7)
      * (false:  8) (null:   9) */
-     E_STACK   *value_stack,
-               *exjson_stack;
+     E_STACK   *exjson_stack;
      EXJSON    *exjson;
      E_STACK_V *temp_exjson_stack;
 %}
@@ -62,19 +61,17 @@ object_key_pair
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_int(exjson, $1.ptr, $3.ival);
-                free($1.ptr);
                 break;
             case SV_DOUBLE:
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_double(exjson, $1.ptr, $3.dval);
-                free($1.ptr);
                 break;
             case SV_STRING:
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_string(exjson, $1.ptr, $3.ptr);
-                free($1.ptr); free($3.ptr);
+                free($3.ptr);
                 break;
             case SV_ARRAY:
                 temp_exjson_stack = pop(exjson_stack);
@@ -88,16 +85,15 @@ object_key_pair
                     push(exjson_stack, exjson, 0);
                 }
                 add_object_array(exjson, $1.ptr, SV_DATA_P(temp_exjson_stack));
-                free($1.ptr);
                 break;
             case SV_OBJECT:
                 temp_exjson_stack = pop(exjson_stack);
                 exjson = INIT_EXJSON();
                 push(exjson_stack, exjson, 0);
                 add_object_object(exjson, $1.ptr, SV_DATA_P(temp_exjson_stack));
-                free($1.ptr);
                 break;
         }
+        free($1.ptr);
     }
     |  object_key_pair ',' T_STR ':' value
     {
@@ -105,29 +101,26 @@ object_key_pair
         {
             case SV_INT:
                 add_object_int(exjson, $3.ptr, $5.ival);
-                free($3.ptr);
                 break;
             case SV_DOUBLE:
                 add_object_double(exjson, $3.ptr, $5.dval);
-                free($3.ptr);
                 break;
             case SV_STRING:
                 add_object_string(exjson, $3.ptr, $5.ptr);
-                free($3.ptr); free($5.ptr);
+                free($5.ptr);
                 break;
             case SV_ARRAY:
         	temp_exjson_stack = pop(exjson_stack);
                 add_object_array(SV_DATA_P(SV_NEXT_P(temp_exjson_stack)), $3.ptr, SV_DATA_P(temp_exjson_stack));
                 exjson = SV_DATA_P(SV_NEXT_P(temp_exjson_stack));
-                free($3.ptr);
                 break;
             case SV_OBJECT:
                 temp_exjson_stack = pop(exjson_stack);
                 add_object_object(SV_DATA_P(SV_NEXT_P(temp_exjson_stack)), $3.ptr, SV_DATA_P(temp_exjson_stack));
-                free($3.ptr);
                 exjson = SV_DATA_P(SV_NEXT_P(temp_exjson_stack));
                 break;
         }
+        free($3.ptr);
     }
 ;
 
@@ -180,6 +173,7 @@ array_data
                 break;
             case SV_STRING:
                 add_array_string(exjson, $3.ptr);
+                free($3.ptr);
                 break;
             case SV_ARRAY:
                 temp_exjson_stack = pop(exjson_stack);
@@ -225,13 +219,11 @@ value
 EXJSON *decode_json(char *json_string)
 {
     exjson_stack = INIT_STACK();
-    value_stack  = INIT_STACK();
-    exjson       = INIT_EXJSON();
 
     YY_BUFFER_STATE buffer = yy_scan_string(json_string);
     yyparse();
     yy_delete_buffer(buffer);
-    destroy_stack(value_stack);
+    destroy_stack2(exjson_stack);
     if ( !_status ) { destroy_exjson(exjson); return NULL; }
     return exjson;
 }

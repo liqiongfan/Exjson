@@ -235,6 +235,31 @@ destroy_stack(E_STACK *stack)
 	free(stack);
 }
 
+void
+destroy_stack2(E_STACK *stack)
+{
+	E_STACK_V *head = ST_HEAD_P(stack),
+	          *prev = head, *next;
+    
+	if ( prev )
+    {
+        while ( SV_PREV_P( prev ) )
+            prev = SV_PREV_P( prev );
+    
+        /* Getting the head of the stack
+         * free the memory allocated. */
+        next = prev;
+        while ( SV_NEXT_P( next ) )
+        {
+            prev = SV_NEXT_P( next );
+            free( next );
+            next = prev;
+        }
+        free( next );
+    }
+	free(stack);
+}
+
 
 
 
