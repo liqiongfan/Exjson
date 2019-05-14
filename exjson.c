@@ -253,7 +253,7 @@ int add_object_ptr(EXJSON *exjson, char *key, void *val, unsigned char val_type)
     switch ( val_type )
     {
         case EXJSON_INT:
-            return add_object_int(exjson, key, *(int *)val);
+            return add_object_int(exjson, key, *(long *)val);
         case EXJSON_DOUBLE:
             return add_object_double(exjson, key, *( double *)val);
         case EXJSON_STRING:
@@ -442,7 +442,7 @@ int add_array_ptr(EXJSON *exjson, void *val, unsigned char val_type)
     switch (val_type)
     {
         case EXJSON_INT:
-            return add_array_int(exjson, *(int *)val);
+            return add_array_int(exjson, *(long *)val);
         case EXJSON_DOUBLE:
             return add_array_double(exjson, *(double *)val);
         case EXJSON_STRING:
@@ -464,7 +464,7 @@ exjson_get_array_or_object_from_key(EXJSON *exjson, char *key_name)
 	unsigned long i = 0, num = E_NUM_P(exjson);
 	if ( E_TYPE_P(exjson) == EX_ARRAY )
 	{
-		perror("Array only can't be get by index");
+		perror("Object only can be get with string key");
 		return NULL;
 	}
 
@@ -487,7 +487,7 @@ exjson_get_array_or_object_from_index(EXJSON *exjson, int index)
 	EXJSON_V *temp = E_DATA_P(exjson);
 	if ( E_TYPE_P(exjson) == EX_OBJECT )
 	{
-		perror("Object only can be get with index");
+		perror("Array can only be get by index");
 		return NULL;
 	}
 
@@ -570,7 +570,7 @@ print_exjson(EXJSON *exjson, int _num)
                 for (j = 0; j <= _num; ++j) {
                     printf("\t");
                 }
-				printf("%d\n", *(int *)EV_VALUE_P(temp));
+				printf("%d\n", *(long *)EV_VALUE_P(temp));
                 break;
             case EXJSON_DOUBLE:
                 if ( EV_NAME_P(temp) == NULL )
