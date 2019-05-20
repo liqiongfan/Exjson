@@ -113,7 +113,7 @@ EXJSON_API void *exjson_get_val_from_index(EXJSON *exjson, int index);
 
 // 编码JSON字符串为EXJSON结构
 EXJSON_API extern EXJSON *decode_json(char *json_string);
-// EXJSON结构解码为JSON字符串
+// EXJSON结构解码为JSON字符串(返回的字符串记得free释放内存)
 EXJSON_API char *encode_json(EXJSON *exjson);
 // 使用完毕后，需要释放内存
 EXJSON_API void destroy_exjson(EXJSON *exjson);
@@ -166,15 +166,14 @@ int main(int argc, char *argv[])
                             "        \"a\": \"b\"\n"
                             "    }\n"
                             "}");
-	// 返回的字符串因为分配了内存，需要手动释放
-    char *str = encode_json(v);
-    printf("%s", str);
-    free(str);
+	// 找到a对象里面a的值
+	char *value = exjson_get_val_from_key(exjson_get_val_from_key(v, "a"), "a");
+	printf("a:%s", value);
+	
     destroy_exjson(v);
     return 0;
-    
     // 输出如下：
-    // {"b":100,"a":{"a":"b"}}
+    // a:b
 }
 ```
 

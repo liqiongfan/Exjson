@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/exjson.dir/main.c.o CMakeFiles/exjson.dir/lex.yy.c.o CMakeFiles/exjson.dir/stack.c.o CMakeFiles/exjson.dir/exjson.tab.c.o CMakeFiles/exjson.dir/exjson.c.o  -o exjson 

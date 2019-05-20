@@ -11,12 +11,16 @@
 
 int main(int argc, char *argv[])
 {
-    EXJSON *v = decode_json("{\"hello world\":-10 # hello world\n"
+    EXJSON *v = decode_json("{\n"
+                            "    \"b\": 100, # 这个是注释\n"
+                            "    \"a\":{\n"
+                            "        \"a\": \"您好\"\n"
+                            "    }\n"
                             "}");
+    // 找到a对象里面a的值
+    char *value = exjson_get_val_from_key(exjson_get_val_from_key(v, "a"), "a");
+    printf("a:%s", value);
 
-    char *str = encode_json(v);
-    printf("%s", str);
-    free(str);
     destroy_exjson(v);
     return 0;
 }
