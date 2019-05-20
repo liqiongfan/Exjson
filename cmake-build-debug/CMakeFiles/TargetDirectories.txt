@@ -1,3 +1,0 @@
-/home/josin/Exjson/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/josin/Exjson/cmake-build-debug/CMakeFiles/exjson.dir
-/home/josin/Exjson/cmake-build-debug/CMakeFiles/edit_cache.dir
