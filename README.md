@@ -4,7 +4,7 @@
 
 #### 什么是Exjson?
 
-**Exjson**是一款高性能的基于Flex & Bison的 **JSON** 解析器，**Xserver**引擎自带 **Exjson** 解析器，其他需要使用的只需要引入几个头文件和源文件即可
+**Exjson**是一款高性能的基于Flex & Bison的 **JSON** 解析器，**Exserver**引擎自带 **Exjson** 解析器，其他需要使用的只需要引入几个头文件和源文件即可
 
 #### Exjson性能
 
