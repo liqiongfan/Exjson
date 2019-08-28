@@ -593,7 +593,7 @@ print_exjson(EXJSON *exjson, int _num)
                 for (j = 0; j <= _num; ++j) {
                     printf("\t");
                 }
-				printf("%d\n", *(long *)EV_VALUE_P(temp));
+				printf("%ld\n", *(long *)EV_VALUE_P(temp));
                 break;
             case EXJSON_DOUBLE:
                 if ( EV_NAME_P(temp) == NULL )
@@ -745,16 +745,14 @@ char *encode_json(EXJSON *exjson)
                 break;
                 
         }
-        if ( i < num - 1 )
-        {
+        if ( i < num - 1 ) {
             _result_str = _exjson_strcat_(_result_str, ",", &_sum, &_used_num);
         }
         temp = temp + 1;
     }
     
     
-    switch( E_TYPE_P(exjson) )
-    {
+    switch( E_TYPE_P(exjson) ) {
         case EX_OBJECT:
             _result_str = _exjson_strcat_(_result_str, "}", &_sum, &_used_num);
             break;
@@ -769,9 +767,10 @@ char *encode_json(EXJSON *exjson)
 void destroy_exjson(EXJSON *exjson)
 {
     if ( !exjson ) return ;
+    unsigned long i;
     static int _num = 0;
     
-    for ( int i = 0; i < E_NUM_P(exjson); ++i )
+    for ( i = 0; i < E_NUM_P(exjson); ++i )
     {
         EXJSON_V *temp = E_DATA_P(exjson) + i;
         switch ( EV_TYPE_P(temp) )
@@ -789,8 +788,7 @@ void destroy_exjson(EXJSON *exjson)
                 free( EV_VALUE_P(temp) );
                 break;
         }
-        if ( i == E_NUM_P(exjson) - 1 )
-        {
+        if ( i == E_NUM_P(exjson) - 1 ) {
             free( E_DATA_P(exjson) );
         }
     }
