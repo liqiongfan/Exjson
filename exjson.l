@@ -7,7 +7,7 @@
 
 %option noyywrap case-insensitive
 
-%s COMMENT
+%x COMMENT
 
 %%
 "{"                                 { return yytext[0]; }
