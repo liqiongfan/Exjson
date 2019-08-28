@@ -39,6 +39,25 @@ INIT_EXJSON()
     return ptr;
 }
 
+char *str_slash(char *str, long str_len)
+{
+    char *r;
+    long  i, k;
+    char  s = '\\';
+    if ( str_len <= 0 ) return NULL;
+    r = malloc( sizeof(char) * ( str_len * 2 + 1 ) );
+    memset(r, 0, sizeof(char) * ( str_len * 2 + 1));
+    for ( k = 0, i = 0; i < str_len; ++i, ++k )
+    {
+        if ( str[i] == '"') {
+            memcpy(r + k, &s, sizeof(char) );
+            ++k;
+        }
+        memcpy(r + k, &str[i], sizeof(char) );
+    }
+    return r;
+}
+
 int add_object_int(EXJSON *exjson, char *key, long val)
 {
     EXJSON_V *val_ptr  = E_DATA_P(exjson),
@@ -131,8 +150,9 @@ int add_object_string(EXJSON *exjson, char *key, char *val)
     EXJSON_V *val_ptr  = E_DATA_P(exjson),
              *temp_ptr = INIT_EXJSON_V(),
              *ptr;
+    char *tval = str_slash(val, strlen(val));
     unsigned long size = E_NUM_P(exjson) + 1,
-        key_len = strlen(key), val_len = strlen(val);
+        key_len = strlen(key), val_len = strlen(tval);
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = malloc(sizeof(char) * (key_len + 1));
@@ -152,7 +172,8 @@ int add_object_string(EXJSON *exjson, char *key, char *val)
     }
     memset(EV_VALUE_P(temp_ptr), 0, val_len + 1);
     assert(EV_VALUE_P(temp_ptr) != NULL);
-    memcpy(EV_VALUE_P(temp_ptr), val, (val_len));
+    memcpy(EV_VALUE_P(temp_ptr), tval, (val_len));
+    free(tval);
     
     /* Set value type */
     EV_TYPE_P(temp_ptr) = EXJSON_STRING;
@@ -343,8 +364,9 @@ int add_array_string(EXJSON *exjson, char *val)
     EXJSON_V *val_ptr  = E_DATA_P(exjson),
              *temp_ptr = INIT_EXJSON_V(),
              *ptr;
+    char *tval = str_slash(val, strlen(val));
     unsigned long size = E_NUM_P(exjson) + 1,
-                  val_len = strlen(val);
+                  val_len = strlen(tval);
     
     /* Allocate key memory and store it. */
     EV_NAME_P(temp_ptr) = NULL;
@@ -356,7 +378,8 @@ int add_array_string(EXJSON *exjson, char *val)
         free( EV_VALUE_P(temp_ptr) ); return 0;
     }
     memset(EV_VALUE_P(temp_ptr), 0, val_len + 1);
-    memcpy(EV_VALUE_P(temp_ptr), val, (val_len));
+    memcpy(EV_VALUE_P(temp_ptr), tval, (val_len));
+    free(tval);
     
     /* Set value type */
     EV_TYPE_P(temp_ptr) = EXJSON_STRING;

@@ -49,6 +49,7 @@ typedef struct _EXJSON
 #define E_NUM(exjson) (exjson).ele_num
 #define E_NUM_P(exjson) E_NUM(*(exjson))
 
+char *str_slash(char *str, long str_len);
 EXJSON_API EXJSON_V * INIT_EXJSON_V();
 EXJSON_API EXJSON * INIT_EXJSON();
 EXJSON_API int add_object_int(EXJSON *exjson, char *key, long val);
